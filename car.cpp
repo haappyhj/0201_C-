@@ -1,113 +1,144 @@
 #include<iostream>
 #include<string>
 using namespace std;
-//has-a[Æ÷ÇÔ],is-a[»ó¼Ó]
 
 class Wheel {
 private:
-	double radius;
+    double radius;
 public:
-	Wheel():radius(0){}
-
-	void rotating() {
-		cout << "²Ü··²Ü··" << endl;
-		
-	}
+    Wheel() {
+        this->radius = 10;
+    }
+    Wheel(double r) {
+        this->radius = r;
+    }
+    void rotating() {
+        cout << "êµ´ë êµ´ë " << endl;
+    }
 };
+
 class Openable {
 protected:
-	bool isOpen;
+    bool isOpen;
 public:
-	virtual void open() = 0;
-	virtual void close() = 0;
+    virtual void open() = 0;
+    virtual void close() = 0;
 };
 
-class Door:public Openable {
+class Door : public Openable {
 private:
-	string material;
-
+    string material;
 public:
-Door():material("no") {}
+    Door() {
+        this->material = "steel";
+    }
+    Door(string m) {
+        this->material = m;
+    }
 
-	void open() override {
-		this->isOpen = true;
-	}
-	void close() {
-		this->isOpen = false;
-	}
+    void state() {
+        cout << (this->isOpen ? "ì—´ë¦¼" : "ë‹«íž˜") << endl;
+    }
+
+    void open() override {
+        this->isOpen = true;
+    }
+    void close() {
+        this->isOpen = false;
+    }
 };
 
-class Window :public Openable {
+class Window : public Openable {
 private:
-	string handling;
+    string handling;
 public:
-	Window():handling("auto") {}
+    Window() {
+        this->handling = "auto";
+    }
+    Window(string h) {
+        this->handling = h;
+    }
 
-	void open() override {
-		this->isOpen = true;
-	}
-	void close() {
-		this->isOpen = false;
-	}
-
+    void open() override {
+        this->isOpen = true;
+    }
+    void close() {
+        this->isOpen = false;
+    }
 };
 
 class Engine {
 private:
-	int power;
+    int power;
 public:
-	Engine() :power(5){}
-	int operating() {
-		return this->power;
-	}
-
+    Engine() {
+        this->power = 100;
+    }
+    Engine(int p) {
+        this->power = p;
+    }
+    int operating() {
+        return this->power;
+    }
 };
-
 
 class Car {
 protected:
-	Wheel wheels[4];
-	Door doors[4];
-	Window windows[4];
-	Engine engine;
-
+    Wheel wheels[4];
+    Door doors[4];
+    Window windows[4];
+    Engine engine;
 public:
-	Car() {
-		this->engine ;
-		for (int i = 0; i < 4; i++) {
-			this->wheels[i] ;
-			this->doors[i] ;
-			this->windows[i];
-		}
-		
+    Car() {
+        this->engine = Engine(100);
+        for (int i = 0; i < 4; i++) {
+            this->wheels[i] = Wheel(10);
+            this->doors[i] = Door("steel");
+            this->windows[i] = Window("auto");
+        }
+    }
 
-		
-		
-	}
-	void drive() {
-		cout << "ºÎ¸ªºÎ¸ª" << endl;
-		cout << this->engine.operating() + "¼Ó·Â ³»´Â Áß" << endl;
-
-	}
-
+    void drive() {
+        cout << "ë¶€ë¦‰ë¶€ë¦‰" << endl;
+        cout << this->engine.operating() << "ì†ë ¥ ë‚´ëŠ”ì¤‘" << endl;
+    }
 };
 
-
-class Taxi :public Car {
+class Taxi : public Car {
 private:
-	int passengers;
-
+    int passengers;
 public:
-	int Passenger;
-	void getPsddengers(int n) {
-		this->passengers = n;
-	}
-	void outPassengers() {
-		this->passengers = 0;
-	}
+    Taxi() : Car(), passengers(0) {
+
+    }
+    int showPassengers() {
+        return this->passengers;
+    }
+    void openDoor() {
+        this->doors[0].open();
+    }
+
+    void checkDoor() {
+        for (int i = 0; i < 4; i++) {
+            cout << i << "ë²ˆì§¸ ë¬¸ì€";
+            this->doors[i].state();
+        }
+    }
+
+
+    void getPassengers(int n) {
+        this->passengers = n;
+    }
+    void outPassengers() {
+        this->passengers = 0;
+    }
 };
 
 int main() {
-	Taxi seoul_taxi();
+
+    Taxi seoul_taxi;
+    seoul_taxi.drive();
+    seoul_taxi.openDoor();
+    seoul_taxi.checkDoor();
 }
 
